@@ -16,7 +16,6 @@ class Main extends Component {
     componentDidMount() {
         const ctx = this.myRef.current.getContext("2d");
         Draw.initCoordinates2D(ctx);
-        Draw.dda(ctx, 0, 0, 15, 15)
     }
 
     onChangeValue = (event) => {
@@ -25,7 +24,7 @@ class Main extends Component {
         })
     }
 
-    draw = () => {
+    draw3D = () => {
         const { x, y, z, cr, cc, cd } = this.state;
         const ctx = this.myRef.current.getContext("2d");
         let a = Math.sqrt(2.0) / 2;
@@ -113,7 +112,7 @@ class Main extends Component {
                                 <input name="cd" className="form-control" onChange={(event) => this.onChangeValue(event)} placeholder="Enter chiều dài" value={cd} style={{ marginLeft: 10 }} />
                             </div>
                             <div className="col-12">
-                                <div className="btn btn-success" onClick={() => this.draw()}>Vẽ</div>
+                                <div className="btn btn-success" onClick={() => this.draw3D()}>Vẽ</div>
                             </div>
                         </form>
                     </div>
