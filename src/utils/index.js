@@ -1,0 +1,74 @@
+export const drawLine = (ctx, color, x1, y1, x2, y2) => {
+    ctx.strokeStyle = color;
+    ctx.beginPath();
+    ctx.moveTo(x1, y1);
+    ctx.lineTo(x2, y2);
+    ctx.stroke();
+};
+
+export const initCoordinates2D = (ctx) => {
+    for (let index = 0; index < 140; index++) {
+        drawLine(ctx, '#c3c3c3', index * 5, 0, index * 5, 700);
+        drawLine(ctx, '#c3c3c3', 0, index * 5, 700, index * 5);
+    }
+    drawLine(ctx, '#FF0000', 0, 350, 700, 350);
+    drawLine(ctx, '#FF0000', 350, 0, 350, 700);
+
+}
+
+export const putPixel = (ctx, x, y) => {
+    ctx.fillStyle = "#FF0000";
+    ctx.fillRect(x, y, 5, 5);
+}
+
+export const dda = (ctx, x0, y0, x1, y1) => {
+    const dx = x1 - x0,
+        dy = y1 - y0,
+        s = Math.abs(dx) > Math.abs(dy) ? Math.abs(dx) : Math.abs(dy),
+        xi = dx * 1.0 / s,
+        yi = dy * 1.0 / s
+
+    let x = x0,
+        y = y0;
+
+    putPixel(ctx, x, y);
+
+    for (let i = 0; i < s; i++) {
+        x += xi;
+        y += yi;
+        putPixel(ctx, x, y);
+    }
+}
+
+
+export const ddaDashed = (ctx, x0, y0, x1, y1) => {
+    const dx = x1 - x0,
+        dy = y1 - y0,
+        s = Math.abs(dx) > Math.abs(dy) ? Math.abs(dx) : Math.abs(dy),
+        xi = dx * 1.0 / s,
+        yi = dy * 1.0 / s
+
+    let x = x0,
+        y = y0;
+
+    putPixel(ctx, x, y);
+
+    for (let i = 0; i < s; i++) {
+        x += xi;
+        y += yi;
+        if (i % 10 ===0) {
+            putPixel(ctx, x, y);
+        }
+    }
+}
+
+// Convert x coordinate real to coordinate user
+export const convertCoordinateX = (x) => {
+    return x * 5 + 350;
+}
+
+// Convert y coordinate real to coordinate user
+export const convertCoordinateY = (y) => {
+    return 350 - y * 5;
+}
+
