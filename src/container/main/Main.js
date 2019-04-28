@@ -18,18 +18,24 @@ class Main extends Component {
         Draw.initCoordinates2D(ctx);
     }
 
+    clearCanvas = () => {
+        const ctx = this.myRef.current.getContext("2d");
+        ctx.clearRect(0, 0, 700, 700);
+        Draw.initCoordinates2D(ctx);
+    }
+
     onChangeValue = (event) => {
         this.setState({
-            [event.target.name]: event.target.value
+            [event.target.name]: parseInt(event.target.value)
         })
     }
 
     draw3D = () => {
+        this.clearCanvas();
         const { x, y, z, cr, cc, cd } = this.state;
         const ctx = this.myRef.current.getContext("2d");
         let a = Math.sqrt(2.0) / 2;
         let x1, x2, x3, x4, x5, x6, x7, x8, y1, y2, y3, y4, y5, y6, y7, y8;
-
         x1 = Draw.convertCoordinateX(parseInt((x + cd / 2) - (y + cr / 2) * a));
         y1 = Draw.convertCoordinateY(parseInt(z - (y + cr / 2) * a));
 
@@ -82,34 +88,34 @@ class Main extends Component {
                         <div className="btn btn-secondary">Vẽ 3D</div>
                     </div>
                     <div className="col-12" style={{ marginTop: 10 }}>
-                        <div className="btn btn-warning">Clear</div>
+                        <div className="btn btn-warning" onClick={() => this.clearCanvas()}>Clear</div>
                     </div>
                     <div className="col-12 row rect" style={{ marginTop: 10 }}>
                         <p className="font-weight-bold">Nhập tọa độ hình hộp chữ nhật.</p>
                         <form class="form-inline">
                             <div className="form-group">
                                 <label className="font-weight-bold" for="exampleInputEmail1">x: </label>
-                                <input name="x" className="form-control" onChange={(event) => this.onChangeValue(event)} placeholder="Enter x" value={x} style={{ marginLeft: 10 }} />
+                                <input type='number' name="x" className="form-control" onChange={(event) => this.onChangeValue(event)} placeholder="Enter x" value={x} style={{ marginLeft: 10 }} />
                             </div>
                             <div className="form-group">
                                 <label className="font-weight-bold" for="exampleInputEmail1">y: </label>
-                                <input name="y" className="form-control" onChange={(event) => this.onChangeValue(event)} placeholder="Enter y" value={y} style={{ marginLeft: 10 }} />
+                                <input type='number' name="y" className="form-control" onChange={(event) => this.onChangeValue(event)} placeholder="Enter y" value={y} style={{ marginLeft: 10 }} />
                             </div>
                             <div className="form-group">
                                 <label className="font-weight-bold" for="exampleInputEmail1">z: </label>
-                                <input name="z" className="form-control" onChange={(event) => this.onChangeValue(event)} placeholder="Enter z" value={z} style={{ marginLeft: 10 }} />
+                                <input type='number' name="z" className="form-control" onChange={(event) => this.onChangeValue(event)} placeholder="Enter z" value={z} style={{ marginLeft: 10 }} />
                             </div>
                             <div className="form-group">
                                 <label className="font-weight-bold" for="exampleInputEmail1">chiều rộng: </label>
-                                <input name="cr" className="form-control" onChange={(event) => this.onChangeValue(event)} placeholder="Enter chiều rộng" value={cr} style={{ marginLeft: 10 }} />
+                                <input type='number' name="cr" className="form-control" onChange={(event) => this.onChangeValue(event)} placeholder="Enter chiều rộng" value={cr} style={{ marginLeft: 10 }} />
                             </div>
                             <div className="form-group">
                                 <label className="font-weight-bold" for="exampleInputEmail1">chiều cao: </label>
-                                <input name="cc" className="form-control" onChange={(event) => this.onChangeValue(event)} placeholder="Enter chiều cao" value={cc} style={{ marginLeft: 10 }} />
+                                <input type='number' name="cc" className="form-control" onChange={(event) => this.onChangeValue(event)} placeholder="Enter chiều cao" value={cc} style={{ marginLeft: 10 }} />
                             </div>
                             <div className="form-group">
                                 <label className="font-weight-bold" for="exampleInputEmail1">chiều dài: </label>
-                                <input name="cd" className="form-control" onChange={(event) => this.onChangeValue(event)} placeholder="Enter chiều dài" value={cd} style={{ marginLeft: 10 }} />
+                                <input type='number' name="cd" className="form-control" onChange={(event) => this.onChangeValue(event)} placeholder="Enter chiều dài" value={cd} style={{ marginLeft: 10 }} />
                             </div>
                             <div className="col-12">
                                 <div className="btn btn-success" onClick={() => this.draw3D()}>Vẽ</div>
