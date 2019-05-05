@@ -72,3 +72,38 @@ export const convertCoordinateY = (y) => {
     return 350 - y * 5;
 }
 
+export const circleMidPoint = (ctx, x0, y0, radius) => {
+    let x = radius;
+    let y = 0;
+    let radiusError = 1 - x;
+    
+    while (x >= y) {
+      putPixel(ctx, x + x0, y + y0);
+      putPixel(ctx, y + x0, x + y0);
+      putPixel(ctx, -x + x0, y + y0);
+      putPixel(ctx, -y + x0, x + y0);
+      putPixel(ctx, -x + x0, -y + y0);
+      putPixel(ctx, -y + x0, -x + y0);
+      putPixel(ctx, x + x0, -y + y0);
+      putPixel(ctx, y + x0, -x + y0);
+      y++;
+      
+      if (radiusError < 0) {
+          radiusError += 2 * y + 1;
+      }
+      else {
+          x--;
+          radiusError+= 2 * (y - x + 1);
+      }
+    }
+}
+
+export const rotationPoint = (x, y, cx, cy, angle) => {
+    let radians = (Math.PI / 180) * angle;
+    let cos = Math.cos(radians);
+    let sin = Math.sin(radians);
+    let nx = (cos * (x - cx)) + (sin * (y - cy)) + cx;
+    let ny = (cos * (y - cy)) - (sin * (x - cx)) + cy;
+    return [nx, ny];
+}
+
