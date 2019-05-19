@@ -120,7 +120,7 @@ class Main extends Component {
         Draw.dda(ctx, x6, y6, x3, y3)
         Draw.dda(ctx, x3 + 5, y6, x3 + 5, y3)
         Draw.dda(ctx, x3 - 5, y6, x3 - 5, y3)
-        Draw.circleMidPoint(ctx,x6,y6,radius)
+        Draw.circleMidPoint(ctx, x6, y6, radius)
         this.timeout = setInterval(async () => {
             let a = await new Promise((res) => {
                 for (let angle = -180, p = Promise.resolve(); angle <= 180; angle = angle + 5) {
@@ -131,7 +131,7 @@ class Main extends Component {
                             Draw.dda(ctx, x3, y6, x3, y3)
                             Draw.dda(ctx, x3 + 5, y6, x3 + 5, y3)
                             Draw.dda(ctx, x3 - 5, y6, x3 - 5, y3)
-                            Draw.circleMidPoint(ctx,x6,y6,radius)
+                            Draw.circleMidPoint(ctx, x6, y6, radius)
                             let [rotX1, rotY1] = Draw.rotationPoint(x1, y1, x6, y6, angle)
                             let [rotX2, rotY2] = Draw.rotationPoint(x2, y2, x6, y6, angle)
                             let [rotX4, rotY4] = Draw.rotationPoint(x4, y4, x6, y6, angle)
@@ -148,7 +148,7 @@ class Main extends Component {
                     ));
                 }
             });
-        },4000);
+        }, 4000);
     }
 
     draw3D = () => {
@@ -196,7 +196,14 @@ class Main extends Component {
         Draw.dda(ctx, x2, y2, x6, y6);
         Draw.ddaDashed(ctx, x3, y3, x7, y7);
         Draw.dda(ctx, x4, y4, x8, y8);
-        Draw.drawText(ctx, x1, y1 + 20, 'A');
+        Draw.drawText(ctx, x1, Draw.convertCoordinateY(parseInt(z - (y + cr / 2) * a) - 5), 'A');
+        Draw.drawText(ctx, x2, Draw.convertCoordinateY(parseInt(z - (y + cr / 2) * a) - 5), 'B');
+        Draw.drawText(ctx, x3, Draw.convertCoordinateY(parseInt(z - (y - cr / 2) * a) - 5), 'C');
+        Draw.drawText(ctx, x4, Draw.convertCoordinateY(parseInt(z - (y - cr / 2) * a) - 5), 'D');
+        Draw.drawText(ctx, x5, Draw.convertCoordinateY(parseInt(z + cc - (y + cr / 2) * a) + 1), 'E');
+        Draw.drawText(ctx, x6, Draw.convertCoordinateY(parseInt(z + cc - (y + cr / 2) * a) + 1), 'F');
+        Draw.drawText(ctx, x7, Draw.convertCoordinateY(parseInt(z + cc - (y - cr / 2) * a) + 1), 'G');
+        Draw.drawText(ctx, x8, Draw.convertCoordinateY(parseInt(z + cc - (y - cr / 2) * a) + 1), 'H');
     }
 
     render() {
