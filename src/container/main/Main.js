@@ -155,9 +155,9 @@ class Main extends Component {
         let radius = 5
         // let x5 = Draw.convertCoordinateX(35);
         // let y5 = Draw.convertCoordinateY(35 - radius);
-        Draw.dda(ctx, x1, y1, x5, y5)
-        Draw.dda(ctx, x2, y2, x4, y4)
-        Draw.dda(ctx, x6, y6, x3, y3)
+        Draw.dda(ctx, x1, y1, x5, y5, "blue")
+        Draw.dda(ctx, x2, y2, x4, y4, "blue")
+        Draw.dda(ctx, x6, y6, x3, y3, "blue")
         Draw.dda(ctx, x3 + 5, y6, x3 + 5, y3)
         Draw.dda(ctx, x3 - 5, y6, x3 - 5, y3)
         Draw.circleMidPoint(ctx, x6, y6, radius)
@@ -180,7 +180,7 @@ class Main extends Component {
         Draw.drawText(ctx, Draw.convertCoordinateX(26), Draw.convertCoordinateY(-25), "D: (20, 30)", "black")
         this.timeout = setInterval(async () => {
             let a = await new Promise((res) => {
-                for (let angle = -180, p = Promise.resolve(); angle <= 180; angle = angle + 5) {
+                for (let angle = 0, p = Promise.resolve(); angle <= 360; angle = angle + 5) {
                     const that = this;
                     p = p.then(_ => new Promise(resolve =>
                         setTimeout(function () {
@@ -208,14 +208,14 @@ class Main extends Component {
                             Draw.drawText(ctx, Draw.convertCoordinateX(26), Draw.convertCoordinateY(-25), `D: (${Math.round(Draw.convertCoordinateToBackX(rotX4))}, ${Math.round(Draw.convertCoordinateToBackY(rotY4))})`, "black")
                             Draw.circleMidPoint(ctx, x6, y6, radius)
                             resolve();
-                            if (angle === 180) {
+                            if (angle === 5) {
                                 res();
                             }
                         }, 50)
                     ));
                 }
             });
-        }, 4000);
+        }, 4250);
     }
 
     draw3D = () => {
