@@ -128,18 +128,19 @@ class Main extends Component {
                     p = p.then(_ => new Promise(resolve =>
                         setTimeout(function () {
                             that.clearCanvas();
-                            Draw.dda(ctx, x3, y6, x3, y3)
-                            Draw.dda(ctx, x3 + 5, y6, x3 + 5, y3)
-                            Draw.dda(ctx, x3 - 5, y6, x3 - 5, y3)
+                            Draw.dda(ctx, x3, y6, x3, y3, "blue")
+                            Draw.dda(ctx, x3 + 5, y6, x3 + 5, y3, "blue")
+                            Draw.dda(ctx, x3 - 5, y6, x3 - 5, y3,"blue")
                             Draw.circleMidPoint(ctx,x6,y6,radius)
                             let [rotX1, rotY1] = Draw.rotationPoint(x1, y1, x6, y6, angle)
                             let [rotX2, rotY2] = Draw.rotationPoint(x2, y2, x6, y6, angle)
                             let [rotX4, rotY4] = Draw.rotationPoint(x4, y4, x6, y6, angle)
                             let [rotX5, rotY5] = Draw.rotationPoint(x5, y5, x6, y6, angle)
-                            Draw.dda(ctx, x6, y6, rotX1, rotY1)
-                            Draw.dda(ctx, x6, y6, rotX2, rotY2)
-                            Draw.dda(ctx, x6, y6, rotX4, rotY4)
-                            Draw.dda(ctx, x6, y6, rotX5, rotY5)
+                            Draw.dda(ctx, x6, y6, rotX1, rotY1,"blue")
+                            Draw.dda(ctx, x6, y6, rotX2, rotY2,"blue")
+                            Draw.dda(ctx, x6, y6, rotX4, rotY4,"blue")
+                            Draw.dda(ctx, x6, y6, rotX5, rotY5,"blue")
+                            Draw.circleMidPoint(ctx,x6,y6,radius)
                             resolve();
                             if (angle === 180) {
                                 res();
@@ -223,14 +224,12 @@ class Main extends Component {
                                 <label className="font-weight-bold" for="exampleInputEmail1">x: </label>
                                 <input type='number' name="x" className="form-control" onChange={(event) => this.onChangeValue(event)} placeholder="Enter x" value={x} style={{ marginLeft: 10 }} />
                             </div>
-                            <div className="form-group">
-                                <label className="font-weight-bold" for="exampleInputEmail1">y: </label>
-                                <input type='number' name="y" className="form-control" onChange={(event) => this.onChangeValue(event)} placeholder="Enter y" value={y} style={{ marginLeft: 10 }} />
-                            </div>
+                            
                             <div className="form-group">
                                 <label className="font-weight-bold" for="exampleInputEmail1">z: </label>
                                 <input type='number' name="z" className="form-control" onChange={(event) => this.onChangeValue(event)} placeholder="Enter z" value={z} style={{ marginLeft: 10 }} />
                             </div>
+                            
                             <div className="form-group">
                                 <label className="font-weight-bold" for="exampleInputEmail1">chiều rộng: </label>
                                 <input type='number' name="cr" className="form-control" onChange={(event) => this.onChangeValue(event)} placeholder="Enter chiều rộng" value={cr} style={{ marginLeft: 10 }} />
