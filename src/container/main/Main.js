@@ -172,7 +172,7 @@ class Main extends Component {
         Draw.dda(ctx, x2, y2, x4, y4, "blue")
         Draw.dda(ctx, x6, y6, x3, y3, "blue")
         Draw.dda(ctx, x3 + 5, y6, x3 + 5, y3, "blue")
-        Draw.dda(ctx, x3 - 5, y6, x3 - 5, y3,"blue")
+        Draw.dda(ctx, x3 - 5, y6, x3 - 5, y3, "blue")
         Draw.circleMidPoint(ctx, x6, y6, radius)
         Draw.drawText(ctx, Draw.convertCoordinateX(17), Draw.convertCoordinateY(49), "A", "black")
         Draw.drawText(ctx, Draw.convertCoordinateX(52), Draw.convertCoordinateY(49), "B", "black")
