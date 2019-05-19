@@ -107,3 +107,8 @@ export const rotationPoint = (x, y, cx, cy, angle) => {
     return [nx, ny];
 }
 
+export const drawText = (ctx, x, y, text, color) => {
+    ctx.font = "20px Arial";
+    ctx.fillStyle = color || "black";
+    ctx.fillText(text, x, y);
+}
