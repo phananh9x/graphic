@@ -17,6 +17,12 @@ class Main extends Component {
             B: { x: 0, y: 0 },
             O: { x: 0, y: 0 },
             radius: 0
+        },
+        pinwheel: {
+            A: { x: 0, y: 0 },
+            B: { x: 0, y: 0 },
+            C: { x: 0, y: 0 },
+            D: { x: 0, y: 0 }
         }
     }
 
@@ -155,6 +161,23 @@ class Main extends Component {
         Draw.dda(ctx, x3 + 5, y6, x3 + 5, y3)
         Draw.dda(ctx, x3 - 5, y6, x3 - 5, y3)
         Draw.circleMidPoint(ctx, x6, y6, radius)
+        Draw.drawText(ctx, Draw.convertCoordinateX(17), Draw.convertCoordinateY(49), "A", "black")
+        Draw.drawText(ctx, Draw.convertCoordinateX(52), Draw.convertCoordinateY(49), "B", "black")
+        Draw.drawText(ctx, Draw.convertCoordinateX(52), Draw.convertCoordinateY(29), "C", "black")
+        Draw.drawText(ctx, Draw.convertCoordinateX(17), Draw.convertCoordinateY(29), "D", "black")
+        this.setState({
+            pinwheel: {
+                A: { x: 20, y: 50 },
+                B: { x: 50, y: 50 },
+                C: { x: 50, y: 30 },
+                D: { x: 20, y: 30 }
+            }
+        })
+        Draw.drawText(ctx, Draw.convertCoordinateX(20), Draw.convertCoordinateY(-5), "Chong chóng quay", "black")
+        Draw.drawText(ctx, Draw.convertCoordinateX(26), Draw.convertCoordinateY(-10), "A: (20, 50)", "black")
+        Draw.drawText(ctx, Draw.convertCoordinateX(26), Draw.convertCoordinateY(-15), "B: (50, 50)", "black")
+        Draw.drawText(ctx, Draw.convertCoordinateX(26), Draw.convertCoordinateY(-20), "C: (50, 30)", "black")
+        Draw.drawText(ctx, Draw.convertCoordinateX(26), Draw.convertCoordinateY(-25), "D: (20, 30)", "black")
         this.timeout = setInterval(async () => {
             let a = await new Promise((res) => {
                 for (let angle = -180, p = Promise.resolve(); angle <= 180; angle = angle + 5) {
@@ -164,17 +187,26 @@ class Main extends Component {
                             that.clearCanvas();
                             Draw.dda(ctx, x3, y6, x3, y3, "blue")
                             Draw.dda(ctx, x3 + 5, y6, x3 + 5, y3, "blue")
-                            Draw.dda(ctx, x3 - 5, y6, x3 - 5, y3,"blue")
-                            Draw.circleMidPoint(ctx,x6,y6,radius)
+                            Draw.dda(ctx, x3 - 5, y6, x3 - 5, y3, "blue")
+                            Draw.circleMidPoint(ctx, x6, y6, radius)
                             let [rotX1, rotY1] = Draw.rotationPoint(x1, y1, x6, y6, angle)
                             let [rotX2, rotY2] = Draw.rotationPoint(x2, y2, x6, y6, angle)
                             let [rotX4, rotY4] = Draw.rotationPoint(x4, y4, x6, y6, angle)
                             let [rotX5, rotY5] = Draw.rotationPoint(x5, y5, x6, y6, angle)
-                            Draw.dda(ctx, x6, y6, rotX1, rotY1,"blue")
-                            Draw.dda(ctx, x6, y6, rotX2, rotY2,"blue")
-                            Draw.dda(ctx, x6, y6, rotX4, rotY4,"blue")
-                            Draw.dda(ctx, x6, y6, rotX5, rotY5,"blue")
-                            Draw.circleMidPoint(ctx,x6,y6,radius)
+                            Draw.dda(ctx, x6, y6, rotX1, rotY1, "blue")
+                            Draw.dda(ctx, x6, y6, rotX2, rotY2, "blue")
+                            Draw.dda(ctx, x6, y6, rotX4, rotY4, "blue")
+                            Draw.dda(ctx, x6, y6, rotX5, rotY5, "blue")
+                            Draw.drawText(ctx, rotX1 - 15, rotY1 - 5, "A", "black")
+                            Draw.drawText(ctx, rotX2 + 10, rotY2 - 5, "B", "black")
+                            Draw.drawText(ctx, rotX5 + 10, rotY5 - 5, "C", "black")
+                            Draw.drawText(ctx, rotX4 - 15, rotY4 - 5, "D", "black")
+                            Draw.drawText(ctx, Draw.convertCoordinateX(20), Draw.convertCoordinateY(-5), "Chong chóng quay", "black")
+                            Draw.drawText(ctx, Draw.convertCoordinateX(26), Draw.convertCoordinateY(-10), `A: (${Math.round(Draw.convertCoordinateToBackX(rotX1))}, ${Math.round(Draw.convertCoordinateToBackY(rotY1))})`, "black")
+                            Draw.drawText(ctx, Draw.convertCoordinateX(26), Draw.convertCoordinateY(-15), `B: (${Math.round(Draw.convertCoordinateToBackX(rotX2))}, ${Math.round(Draw.convertCoordinateToBackY(rotY2))})`, "black")
+                            Draw.drawText(ctx, Draw.convertCoordinateX(26), Draw.convertCoordinateY(-20), `C: (${Math.round(Draw.convertCoordinateToBackX(rotX5))}, ${Math.round(Draw.convertCoordinateToBackY(rotY5))})`, "black")
+                            Draw.drawText(ctx, Draw.convertCoordinateX(26), Draw.convertCoordinateY(-25), `D: (${Math.round(Draw.convertCoordinateToBackX(rotX4))}, ${Math.round(Draw.convertCoordinateToBackY(rotY4))})`, "black")
+                            Draw.circleMidPoint(ctx, x6, y6, radius)
                             resolve();
                             if (angle === 180) {
                                 res();
@@ -235,7 +267,7 @@ class Main extends Component {
     }
 
     render() {
-        const { x, y, z, cr, cc, cd, pendulum } = this.state;
+        const { x, y, z, cr, cc, cd, pendulum, pinwheel } = this.state;
         return (
             <div className="container row col-12">
                 <div className="col-3 ">
@@ -258,12 +290,12 @@ class Main extends Component {
                                 <label className="font-weight-bold" for="exampleInputEmail1">x: </label>
                                 <input type='number' name="x" className="form-control" onChange={(event) => this.onChangeValue(event)} placeholder="Enter x" value={x} style={{ marginLeft: 10 }} />
                             </div>
-                            
+
                             <div className="form-group">
                                 <label className="font-weight-bold" for="exampleInputEmail1">z: </label>
                                 <input type='number' name="z" className="form-control" onChange={(event) => this.onChangeValue(event)} placeholder="Enter z" value={z} style={{ marginLeft: 10 }} />
                             </div>
-                            
+
                             <div className="form-group">
                                 <label className="font-weight-bold" for="exampleInputEmail1">chiều rộng: </label>
                                 <input type='number' name="cr" className="form-control" onChange={(event) => this.onChangeValue(event)} placeholder="Enter chiều rộng" value={cr} style={{ marginLeft: 10 }} />
@@ -306,6 +338,21 @@ class Main extends Component {
                         </div>
                         <div className="form-group">
                             <label className="font-weight-bold" for="exampleInputEmail1">Radius: {pendulum.radius}</label>
+                        </div>
+                    </div>
+                    <div className="col-md-12">
+                        <p className="font-weight-bold">Chong chóng</p>
+                        <div className="form-group">
+                            <label className="font-weight-bold" for="exampleInputEmail1">A: ({pinwheel.A.x}, {pinwheel.A.y})</label>
+                        </div>
+                        <div className="form-group">
+                            <label className="font-weight-bold" for="exampleInputEmail1">B: ({pinwheel.B.x}, {pinwheel.B.y})</label>
+                        </div>
+                        <div className="form-group">
+                            <label className="font-weight-bold" for="exampleInputEmail1">C: ({pinwheel.C.x}, {pinwheel.C.y})</label>
+                        </div>
+                        <div className="form-group">
+                            <label className="font-weight-bold" for="exampleInputEmail1">D: ({pinwheel.D.x}, {pinwheel.D.y})</label>
                         </div>
                     </div>
                 </div>
