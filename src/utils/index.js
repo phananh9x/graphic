@@ -16,12 +16,12 @@ export const initCoordinates2D = (ctx) => {
 
 }
 
-export const putPixel = (ctx, x, y) => {
-    ctx.fillStyle = "#FF0000";
+export const putPixel = (ctx, x, y, color) => {
+    ctx.fillStyle = color || "#FF0000";
     ctx.fillRect(x, y, 5, 5);
 }
 
-export const dda = (ctx, x0, y0, x1, y1) => {
+export const dda = (ctx, x0, y0, x1, y1, color) => {
     const dx = x1 - x0,
         dy = y1 - y0,
         s = Math.abs(dx) > Math.abs(dy) ? Math.abs(dx) : Math.abs(dy),
@@ -31,17 +31,17 @@ export const dda = (ctx, x0, y0, x1, y1) => {
     let x = x0,
         y = y0;
 
-    putPixel(ctx, x, y);
+    putPixel(ctx, x, y, color);
 
     for (let i = 0; i < s; i++) {
         x += xi;
         y += yi;
-        putPixel(ctx, x, y);
+        putPixel(ctx, x, y, color);
     }
 }
 
 
-export const ddaDashed = (ctx, x0, y0, x1, y1) => {
+export const ddaDashed = (ctx, x0, y0, x1, y1, color) => {
     const dx = x1 - x0,
         dy = y1 - y0,
         s = Math.abs(dx) > Math.abs(dy) ? Math.abs(dx) : Math.abs(dy),
@@ -51,13 +51,13 @@ export const ddaDashed = (ctx, x0, y0, x1, y1) => {
     let x = x0,
         y = y0;
 
-    putPixel(ctx, x, y);
+    putPixel(ctx, x, y, color);
 
     for (let i = 0; i < s; i++) {
         x += xi;
         y += yi;
-        if (i % 10 ===0) {
-            putPixel(ctx, x, y);
+        if (i % 10 === 0) {
+            putPixel(ctx, x, y, color);
         }
     }
 }
@@ -72,29 +72,29 @@ export const convertCoordinateY = (y) => {
     return 350 - y * 5;
 }
 
-export const circleMidPoint = (ctx, x0, y0, radius) => {
+export const circleMidPoint = (ctx, x0, y0, radius, color) => {
     let x = radius;
     let y = 0;
     let radiusError = 1 - x;
-    
+
     while (x >= y) {
-      putPixel(ctx, x + x0, y + y0);
-      putPixel(ctx, y + x0, x + y0);
-      putPixel(ctx, -x + x0, y + y0);
-      putPixel(ctx, -y + x0, x + y0);
-      putPixel(ctx, -x + x0, -y + y0);
-      putPixel(ctx, -y + x0, -x + y0);
-      putPixel(ctx, x + x0, -y + y0);
-      putPixel(ctx, y + x0, -x + y0);
-      y++;
-      
-      if (radiusError < 0) {
-          radiusError += 2 * y + 1;
-      }
-      else {
-          x--;
-          radiusError+= 2 * (y - x + 1);
-      }
+        putPixel(ctx, x + x0, y + y0, color);
+        putPixel(ctx, y + x0, x + y0, color);
+        putPixel(ctx, -x + x0, y + y0, color);
+        putPixel(ctx, -y + x0, x + y0, color);
+        putPixel(ctx, -x + x0, -y + y0, color);
+        putPixel(ctx, -y + x0, -x + y0, color);
+        putPixel(ctx, x + x0, -y + y0, color);
+        putPixel(ctx, y + x0, -x + y0, color);
+        y++;
+
+        if (radiusError < 0) {
+            radiusError += 2 * y + 1;
+        }
+        else {
+            x--;
+            radiusError += 2 * (y - x + 1);
+        }
     }
 }
 
