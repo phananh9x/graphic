@@ -6,12 +6,28 @@ class Main extends Component {
     myRef = React.createRef();
     timeout;
     state = {
-        x: 0,
-        y: 0,
-        z: 0,
-        cr: 10,
-        cc: 30,
-        cd: 20,
+        rect: {
+            x: 0,
+            y: 0,
+            z: 0,
+            cr: 10,
+            cc: 30,
+            cd: 20,
+            A: { x: 0, y: 0 },
+            B: { x: 0, y: 0 },
+            C: { x: 0, y: 0 },
+            D: { x: 0, y: 0 },
+            E: { x: 0, y: 0 },
+            F: { x: 0, y: 0 },
+            G: { x: 0, y: 0 },
+            H: { x: 0, y: 0 },
+        },
+        pendulum: {
+            A: { x: 0, y: 0 },
+            B: { x: 0, y: 0 },
+            O: { x: 0, y: 0 },
+            radius: 0
+        }
     }
 
     componentDidMount() {
@@ -27,7 +43,10 @@ class Main extends Component {
 
     onChangeValue = (event) => {
         this.setState({
-            [event.target.name]: parseInt(event.target.value)
+            rect: {
+                ...this.state.rect,
+                [event.target.name]: parseInt(event.target.value)
+            }
         })
     }
 
@@ -36,20 +55,36 @@ class Main extends Component {
         const ctx = this.myRef.current.getContext("2d");
         let x1 = Draw.convertCoordinateX(20);
         let y1 = Draw.convertCoordinateY(70);
+        let x6 = Draw.convertCoordinateX(20);
+        let y6 = Draw.convertCoordinateY(69);
         let x2 = Draw.convertCoordinateX(50);
         let y2 = Draw.convertCoordinateY(70);
+        let x7 = Draw.convertCoordinateX(50);
+        let y7 = Draw.convertCoordinateY(69);
         let x3 = Draw.convertCoordinateX(35);
-        let y3 = Draw.convertCoordinateY(70);
+        let y3 = Draw.convertCoordinateY(68);
         let x4 = Draw.convertCoordinateX(35);
         let y4 = Draw.convertCoordinateY(35);
         let radius = 5
         let x5 = Draw.convertCoordinateX(35);
         let y5 = Draw.convertCoordinateY(35 - radius);
-        Draw.dda(ctx, x1, y1, x2, y2)
-        Draw.dda(ctx, x3, y3, x4, y4)
-        Draw.putPixel(ctx, x4, y4)
-        Draw.putPixel(ctx, x4, y4 - 35)
+        Draw.dda(ctx, x1, y1, x2, y2, "black")
+        Draw.dda(ctx, x6, y6, x7, y7, "black")
+        Draw.drawText(ctx, Draw.convertCoordinateX(37), Draw.convertCoordinateY(64), "A", "black")
+        Draw.dda(ctx, x3, y3, x4, y4, "blue")
+        Draw.drawText(ctx, Draw.convertCoordinateX(37), Draw.convertCoordinateY(35), "B", "black")
         Draw.circleMidPoint(ctx, x5, y5, radius * 5)
+        Draw.drawText(ctx, Draw.convertCoordinateX(20), Draw.convertCoordinateY(-5), "Con lắc đơn quay", "black")
+        this.setState({
+            pendulum: {
+                A: { x: 37, y: 64 },
+                B: { x: 37, y: 35 },
+                O: { x: 35, y: 35 - radius },
+                radius
+            }
+        })
+        Draw.drawText(ctx, Draw.convertCoordinateX(26), Draw.convertCoordinateY(-10), "B: (37, 35)", "black")
+        Draw.drawText(ctx, Draw.convertCoordinateX(23), Draw.convertCoordinateY(-15), `Tâm O: (35, ${35 - radius})`, "black")
         this.timeout = setInterval(async () => {
             let a = await new Promise((res) => {
                 for (let angle = -30, p = Promise.resolve(); angle <= 30; angle = angle + 5) {
@@ -57,11 +92,17 @@ class Main extends Component {
                     p = p.then(_ => new Promise(resolve =>
                         setTimeout(function () {
                             that.clearCanvas();
-                            Draw.dda(ctx, x1, y1, x2, y2)
+                            Draw.drawText(ctx, Draw.convertCoordinateX(20), Draw.convertCoordinateY(-5), "Con lắc đơn quay", "black")
+                            Draw.dda(ctx, x1, y1, x2, y2, "black")
+                            Draw.dda(ctx, x6, y6, x7, y7, "black")
+                            Draw.drawText(ctx, Draw.convertCoordinateX(37), Draw.convertCoordinateY(64), "A", "black")
                             let [rotX, rotY] = Draw.rotationPoint(x4, y4, x3, y3, angle)
                             let [rotX5, rotY5] = Draw.rotationPoint(x5, y5, x3, y3, angle)
-                            Draw.dda(ctx, x3, y3, rotX, rotY)
+                            Draw.dda(ctx, x3, y3, rotX, rotY, "blue")
+                            Draw.drawText(ctx, rotX + 10, rotY, "B", "black")
                             Draw.circleMidPoint(ctx, rotX5, rotY5, radius * 5)
+                            Draw.drawText(ctx, Draw.convertCoordinateX(26), Draw.convertCoordinateY(-10), `B: (${Math.round(Draw.convertCoordinateToBackX(rotX))}, ${Math.round(Draw.convertCoordinateToBackY(rotY))})`, "black")
+                            Draw.drawText(ctx, Draw.convertCoordinateX(23), Draw.convertCoordinateY(-15), `Tâm O: (${Math.round(Draw.convertCoordinateToBackX(rotX5))}, ${Math.round(Draw.convertCoordinateToBackY(rotY5))})`, "black")
                             resolve();
                             if (angle === 30) {
                                 res();
@@ -76,11 +117,17 @@ class Main extends Component {
                     p = p.then(_ => new Promise(resolve =>
                         setTimeout(function () {
                             that.clearCanvas();
-                            Draw.dda(ctx, x1, y1, x2, y2)
+                            Draw.drawText(ctx, Draw.convertCoordinateX(20), Draw.convertCoordinateY(-5), "Con lắc đơn quay", "black")
+                            Draw.dda(ctx, x1, y1, x2, y2, "black")
+                            Draw.dda(ctx, x6, y6, x7, y7, "black")
+                            Draw.drawText(ctx, Draw.convertCoordinateX(37), Draw.convertCoordinateY(64), "A", "black")
                             let [rotX, rotY] = Draw.rotationPoint(x4, y4, x3, y3, angle)
                             let [rotX5, rotY5] = Draw.rotationPoint(x5, y5, x3, y3, angle)
-                            Draw.dda(ctx, x3, y3, rotX, rotY)
+                            Draw.dda(ctx, x3, y3, rotX, rotY, "blue")
+                            Draw.drawText(ctx, rotX + 10, rotY, "B", "black")
                             Draw.circleMidPoint(ctx, rotX5, rotY5, radius * 5)
+                            Draw.drawText(ctx, Draw.convertCoordinateX(26), Draw.convertCoordinateY(-10), `B: (${Math.round(Draw.convertCoordinateToBackX(rotX))}, ${Math.round(Draw.convertCoordinateToBackY(rotY))})`, "black")
+                            Draw.drawText(ctx, Draw.convertCoordinateX(23), Draw.convertCoordinateY(-15), `Tâm O: (${Math.round(Draw.convertCoordinateToBackX(rotX5))}, ${Math.round(Draw.convertCoordinateToBackY(rotY5))})`, "black")
                             resolve();
                             if (angle === -30) {
                                 res();
@@ -128,18 +175,19 @@ class Main extends Component {
                     p = p.then(_ => new Promise(resolve =>
                         setTimeout(function () {
                             that.clearCanvas();
-                            Draw.dda(ctx, x3, y6, x3, y3)
-                            Draw.dda(ctx, x3 + 5, y6, x3 + 5, y3)
-                            Draw.dda(ctx, x3 - 5, y6, x3 - 5, y3)
+                            Draw.dda(ctx, x3, y6, x3, y3, "blue")
+                            Draw.dda(ctx, x3 + 5, y6, x3 + 5, y3, "blue")
+                            Draw.dda(ctx, x3 - 5, y6, x3 - 5, y3, "blue")
                             Draw.circleMidPoint(ctx, x6, y6, radius)
                             let [rotX1, rotY1] = Draw.rotationPoint(x1, y1, x6, y6, angle)
                             let [rotX2, rotY2] = Draw.rotationPoint(x2, y2, x6, y6, angle)
                             let [rotX4, rotY4] = Draw.rotationPoint(x4, y4, x6, y6, angle)
                             let [rotX5, rotY5] = Draw.rotationPoint(x5, y5, x6, y6, angle)
-                            Draw.dda(ctx, x6, y6, rotX1, rotY1)
-                            Draw.dda(ctx, x6, y6, rotX2, rotY2)
-                            Draw.dda(ctx, x6, y6, rotX4, rotY4)
-                            Draw.dda(ctx, x6, y6, rotX5, rotY5)
+                            Draw.dda(ctx, x6, y6, rotX1, rotY1, "blue")
+                            Draw.dda(ctx, x6, y6, rotX2, rotY2, "blue")
+                            Draw.dda(ctx, x6, y6, rotX4, rotY4, "blue")
+                            Draw.dda(ctx, x6, y6, rotX5, rotY5, "blue")
+                            Draw.circleMidPoint(ctx, x6, y6, radius)
                             resolve();
                             if (angle === 180) {
                                 res();
@@ -156,7 +204,8 @@ class Main extends Component {
             clearInterval(this.timeout)
         }
         this.clearCanvas();
-        const { x, y, z, cr, cc, cd } = this.state;
+        const { rect: { x, y, z, cr, cc, cd } } = this.state;
+        console.log(this.state)
         const ctx = this.myRef.current.getContext("2d");
         let a = Math.sqrt(2.0) / 2;
         let x1, x2, x3, x4, x5, x6, x7, x8, y1, y2, y3, y4, y5, y6, y7, y8;
@@ -204,10 +253,23 @@ class Main extends Component {
         Draw.drawText(ctx, x6, Draw.convertCoordinateY(parseInt(z + cc - (y + cr / 2) * a) + 1), 'F');
         Draw.drawText(ctx, x7, Draw.convertCoordinateY(parseInt(z + cc - (y - cr / 2) * a) + 1), 'G');
         Draw.drawText(ctx, x8, Draw.convertCoordinateY(parseInt(z + cc - (y - cr / 2) * a) + 1), 'H');
+        this.setState({
+            rect: {
+                ...this.state.rect,
+                A: { x: Draw.convertCoordinateToBackX(x1), y: Draw.convertCoordinateToBackY(y1) },
+                B: { x: Draw.convertCoordinateToBackX(x2), y: Draw.convertCoordinateToBackY(y2) },
+                C: { x: Draw.convertCoordinateToBackX(x3), y: Draw.convertCoordinateToBackY(y3) },
+                D: { x: Draw.convertCoordinateToBackX(x4), y: Draw.convertCoordinateToBackY(y4) },
+                E: { x: Draw.convertCoordinateToBackX(x5), y: Draw.convertCoordinateToBackY(y5) },
+                F: { x: Draw.convertCoordinateToBackX(x6), y: Draw.convertCoordinateToBackY(y6) },
+                G: { x: Draw.convertCoordinateToBackX(x7), y: Draw.convertCoordinateToBackY(y7) },
+                H: { x: Draw.convertCoordinateToBackX(x8), y: Draw.convertCoordinateToBackY(y8) },
+            }
+        })
     }
 
     render() {
-        const { x, y, z, cr, cc, cd } = this.state;
+        const { rect: { x, y, z, cr, cc, cd, A, B, C, D, E, F, G, H }, pendulum } = this.state;
         return (
             <div className="container row col-12">
                 <div className="col-3 ">
@@ -238,6 +300,7 @@ class Main extends Component {
                                 <label className="font-weight-bold" for="exampleInputEmail1">z: </label>
                                 <input type='number' name="z" className="form-control" onChange={(event) => this.onChangeValue(event)} placeholder="Enter z" value={z} style={{ marginLeft: 10 }} />
                             </div>
+
                             <div className="form-group">
                                 <label className="font-weight-bold" for="exampleInputEmail1">chiều rộng: </label>
                                 <input type='number' name="cr" className="form-control" onChange={(event) => this.onChangeValue(event)} placeholder="Enter chiều rộng" value={cr} style={{ marginLeft: 10 }} />
@@ -267,6 +330,48 @@ class Main extends Component {
                 </div>
                 <div className="col-2">
                     <p className="font-weight-bold">Thông tin chi tiết</p>
+                    <div className="col-md-12">
+                        <p className="font-weight-bold">Con lắc đơn</p>
+                        <div className="form-group">
+                            <label className="font-weight-bold" for="exampleInputEmail1">A: ({pendulum.A.x}, {pendulum.A.y})</label>
+                        </div>
+                        <div className="form-group">
+                            <label className="font-weight-bold" for="exampleInputEmail1">B: ({pendulum.B.x}, {pendulum.B.y})</label>
+                        </div>
+                        <div className="form-group">
+                            <label className="font-weight-bold" for="exampleInputEmail1">O: ({pendulum.O.x}, {pendulum.O.y})</label>
+                        </div>
+                        <div className="form-group">
+                            <label className="font-weight-bold" for="exampleInputEmail1">Radius: {pendulum.radius}</label>
+                        </div>
+                    </div>
+                    <div className="col-md-12">
+                        <p className="font-weight-bold">Hình hộp chữ nhật</p>
+                        <div className="form-group">
+                            <label className="font-weight-bold" for="exampleInputEmail1">A: ({A.x}, {A.y})</label>
+                        </div>
+                        <div className="form-group">
+                            <label className="font-weight-bold" for="exampleInputEmail1">B: ({B.x}, {B.y})</label>
+                        </div>
+                        <div className="form-group">
+                            <label className="font-weight-bold" for="exampleInputEmail1">C: ({C.x}, {C.y})</label>
+                        </div>
+                        <div className="form-group">
+                            <label className="font-weight-bold" for="exampleInputEmail1">D: ({D.x}, {D.y})</label>
+                        </div>
+                        <div className="form-group">
+                            <label className="font-weight-bold" for="exampleInputEmail1">E: ({E.x}, {E.y})</label>
+                        </div>
+                        <div className="form-group">
+                            <label className="font-weight-bold" for="exampleInputEmail1">F: ({F.x}, {F.y})</label>
+                        </div>
+                        <div className="form-group">
+                            <label className="font-weight-bold" for="exampleInputEmail1">G: ({G.x}, {G.y})</label>
+                        </div>
+                        <div className="form-group">
+                            <label className="font-weight-bold" for="exampleInputEmail1">H: ({H.x}, {H.y})</label>
+                        </div>
+                    </div>
                 </div>
             </div>
         );
