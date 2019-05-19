@@ -27,6 +27,12 @@ class Main extends Component {
             B: { x: 0, y: 0 },
             O: { x: 0, y: 0 },
             radius: 0
+        },
+        pinwheel: {
+            A: { x: 0, y: 0 },
+            B: { x: 0, y: 0 },
+            C: { x: 0, y: 0 },
+            D: { x: 0, y: 0 }
         }
     }
 
@@ -162,15 +168,32 @@ class Main extends Component {
         let radius = 5
         // let x5 = Draw.convertCoordinateX(35);
         // let y5 = Draw.convertCoordinateY(35 - radius);
-        Draw.dda(ctx, x1, y1, x5, y5)
-        Draw.dda(ctx, x2, y2, x4, y4)
-        Draw.dda(ctx, x6, y6, x3, y3)
-        Draw.dda(ctx, x3 + 5, y6, x3 + 5, y3)
-        Draw.dda(ctx, x3 - 5, y6, x3 - 5, y3)
+        Draw.dda(ctx, x1, y1, x5, y5, "blue")
+        Draw.dda(ctx, x2, y2, x4, y4, "blue")
+        Draw.dda(ctx, x6, y6, x3, y3, "blue")
+        Draw.dda(ctx, x3 + 5, y6, x3 + 5, y3, "blue")
+        Draw.dda(ctx, x3 - 5, y6, x3 - 5, y3,"blue")
         Draw.circleMidPoint(ctx, x6, y6, radius)
+        Draw.drawText(ctx, Draw.convertCoordinateX(17), Draw.convertCoordinateY(49), "A", "black")
+        Draw.drawText(ctx, Draw.convertCoordinateX(52), Draw.convertCoordinateY(49), "B", "black")
+        Draw.drawText(ctx, Draw.convertCoordinateX(52), Draw.convertCoordinateY(29), "C", "black")
+        Draw.drawText(ctx, Draw.convertCoordinateX(17), Draw.convertCoordinateY(29), "D", "black")
+        this.setState({
+            pinwheel: {
+                A: { x: 20, y: 50 },
+                B: { x: 50, y: 50 },
+                C: { x: 50, y: 30 },
+                D: { x: 20, y: 30 }
+            }
+        })
+        Draw.drawText(ctx, Draw.convertCoordinateX(20), Draw.convertCoordinateY(-5), "Chong chóng quay", "black")
+        Draw.drawText(ctx, Draw.convertCoordinateX(26), Draw.convertCoordinateY(-10), "A: (20, 50)", "black")
+        Draw.drawText(ctx, Draw.convertCoordinateX(26), Draw.convertCoordinateY(-15), "B: (50, 50)", "black")
+        Draw.drawText(ctx, Draw.convertCoordinateX(26), Draw.convertCoordinateY(-20), "C: (50, 30)", "black")
+        Draw.drawText(ctx, Draw.convertCoordinateX(26), Draw.convertCoordinateY(-25), "D: (20, 30)", "black")
         this.timeout = setInterval(async () => {
             let a = await new Promise((res) => {
-                for (let angle = -180, p = Promise.resolve(); angle <= 180; angle = angle + 5) {
+                for (let angle = 0, p = Promise.resolve(); angle <= 360; angle = angle + 5) {
                     const that = this;
                     p = p.then(_ => new Promise(resolve =>
                         setTimeout(function () {
@@ -187,16 +210,25 @@ class Main extends Component {
                             Draw.dda(ctx, x6, y6, rotX2, rotY2, "blue")
                             Draw.dda(ctx, x6, y6, rotX4, rotY4, "blue")
                             Draw.dda(ctx, x6, y6, rotX5, rotY5, "blue")
+                            Draw.drawText(ctx, rotX1 - 15, rotY1 - 5, "A", "black")
+                            Draw.drawText(ctx, rotX2 + 10, rotY2 - 5, "B", "black")
+                            Draw.drawText(ctx, rotX5 + 10, rotY5 - 5, "C", "black")
+                            Draw.drawText(ctx, rotX4 - 15, rotY4 - 5, "D", "black")
+                            Draw.drawText(ctx, Draw.convertCoordinateX(20), Draw.convertCoordinateY(-5), "Chong chóng quay", "black")
+                            Draw.drawText(ctx, Draw.convertCoordinateX(26), Draw.convertCoordinateY(-10), `A: (${Math.round(Draw.convertCoordinateToBackX(rotX1))}, ${Math.round(Draw.convertCoordinateToBackY(rotY1))})`, "black")
+                            Draw.drawText(ctx, Draw.convertCoordinateX(26), Draw.convertCoordinateY(-15), `B: (${Math.round(Draw.convertCoordinateToBackX(rotX2))}, ${Math.round(Draw.convertCoordinateToBackY(rotY2))})`, "black")
+                            Draw.drawText(ctx, Draw.convertCoordinateX(26), Draw.convertCoordinateY(-20), `C: (${Math.round(Draw.convertCoordinateToBackX(rotX5))}, ${Math.round(Draw.convertCoordinateToBackY(rotY5))})`, "black")
+                            Draw.drawText(ctx, Draw.convertCoordinateX(26), Draw.convertCoordinateY(-25), `D: (${Math.round(Draw.convertCoordinateToBackX(rotX4))}, ${Math.round(Draw.convertCoordinateToBackY(rotY4))})`, "black")
                             Draw.circleMidPoint(ctx, x6, y6, radius)
                             resolve();
-                            if (angle === 180) {
+                            if (angle === 5) {
                                 res();
                             }
                         }, 50)
                     ));
                 }
             });
-        }, 4000);
+        }, 3800);
     }
 
     draw3D = () => {
@@ -269,7 +301,7 @@ class Main extends Component {
     }
 
     render() {
-        const { rect: { x, y, z, cr, cc, cd, A, B, C, D, E, F, G, H }, pendulum } = this.state;
+        const { rect: { x, y, z, cr, cc, cd, A, B, C, D, E, F, G, H }, pendulum, pinwheel } = this.state;
         return (
             <div className="container row col-12">
                 <div className="col-3 ">
@@ -372,8 +404,23 @@ class Main extends Component {
                             <label className="font-weight-bold" for="exampleInputEmail1">H: ({H.x}, {H.y})</label>
                         </div>
                     </div>
+                    <div className="col-md-12">
+                        <p className="font-weight-bold">Chong chóng</p>
+                        <div className="form-group">
+                            <label className="font-weight-bold" for="exampleInputEmail1">A: ({pinwheel.A.x}, {pinwheel.A.y})</label>
+                        </div>
+                        <div className="form-group">
+                            <label className="font-weight-bold" for="exampleInputEmail1">B: ({pinwheel.B.x}, {pinwheel.B.y})</label>
+                        </div>
+                        <div className="form-group">
+                            <label className="font-weight-bold" for="exampleInputEmail1">C: ({pinwheel.C.x}, {pinwheel.C.y})</label>
+                        </div>
+                        <div className="form-group">
+                            <label className="font-weight-bold" for="exampleInputEmail1">D: ({pinwheel.D.x}, {pinwheel.D.y})</label>
+                        </div>
+                    </div>
                 </div>
-            </div>
+            </div >
         );
     }
 }
