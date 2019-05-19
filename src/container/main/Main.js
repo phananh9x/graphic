@@ -12,6 +12,12 @@ class Main extends Component {
         cr: 10,
         cc: 30,
         cd: 20,
+        pendulum: {
+            A: { x: 0, y: 0 },
+            B: { x: 0, y: 0 },
+            O: { x: 0, y: 0 },
+            radius: 0
+        }
     }
 
     componentDidMount() {
@@ -36,20 +42,36 @@ class Main extends Component {
         const ctx = this.myRef.current.getContext("2d");
         let x1 = Draw.convertCoordinateX(20);
         let y1 = Draw.convertCoordinateY(70);
+        let x6 = Draw.convertCoordinateX(20);
+        let y6 = Draw.convertCoordinateY(69);
         let x2 = Draw.convertCoordinateX(50);
         let y2 = Draw.convertCoordinateY(70);
+        let x7 = Draw.convertCoordinateX(50);
+        let y7 = Draw.convertCoordinateY(69);
         let x3 = Draw.convertCoordinateX(35);
-        let y3 = Draw.convertCoordinateY(70);
+        let y3 = Draw.convertCoordinateY(68);
         let x4 = Draw.convertCoordinateX(35);
         let y4 = Draw.convertCoordinateY(35);
         let radius = 5
         let x5 = Draw.convertCoordinateX(35);
         let y5 = Draw.convertCoordinateY(35 - radius);
-        Draw.dda(ctx, x1, y1, x2, y2)
-        Draw.dda(ctx, x3, y3, x4, y4)
-        Draw.putPixel(ctx, x4, y4)
-        Draw.putPixel(ctx, x4, y4 - 35)
+        Draw.dda(ctx, x1, y1, x2, y2, "black")
+        Draw.dda(ctx, x6, y6, x7, y7, "black")
+        Draw.drawText(ctx, Draw.convertCoordinateX(37), Draw.convertCoordinateY(64), "A", "black")
+        Draw.dda(ctx, x3, y3, x4, y4, "blue")
+        Draw.drawText(ctx, Draw.convertCoordinateX(37), Draw.convertCoordinateY(35), "B", "black")
         Draw.circleMidPoint(ctx, x5, y5, radius * 5)
+        Draw.drawText(ctx, Draw.convertCoordinateX(20), Draw.convertCoordinateY(-5), "Con lắc đơn quay", "black")
+        this.setState({
+            pendulum: {
+                A: { x: 37, y: 64 },
+                B: { x: 37, y: 35 },
+                O: { x: 35, y: 35 - radius },
+                radius
+            }
+        })
+        Draw.drawText(ctx, Draw.convertCoordinateX(26), Draw.convertCoordinateY(-10), "B: (37, 35)", "black")
+        Draw.drawText(ctx, Draw.convertCoordinateX(23), Draw.convertCoordinateY(-15), `Tâm O: (35, ${35 - radius})`, "black")
         this.timeout = setInterval(async () => {
             let a = await new Promise((res) => {
                 for (let angle = -30, p = Promise.resolve(); angle <= 30; angle = angle + 5) {
@@ -57,11 +79,17 @@ class Main extends Component {
                     p = p.then(_ => new Promise(resolve =>
                         setTimeout(function () {
                             that.clearCanvas();
-                            Draw.dda(ctx, x1, y1, x2, y2)
+                            Draw.drawText(ctx, Draw.convertCoordinateX(20), Draw.convertCoordinateY(-5), "Con lắc đơn quay", "black")
+                            Draw.dda(ctx, x1, y1, x2, y2, "black")
+                            Draw.dda(ctx, x6, y6, x7, y7, "black")
+                            Draw.drawText(ctx, Draw.convertCoordinateX(37), Draw.convertCoordinateY(64), "A", "black")
                             let [rotX, rotY] = Draw.rotationPoint(x4, y4, x3, y3, angle)
                             let [rotX5, rotY5] = Draw.rotationPoint(x5, y5, x3, y3, angle)
-                            Draw.dda(ctx, x3, y3, rotX, rotY)
+                            Draw.dda(ctx, x3, y3, rotX, rotY, "blue")
+                            Draw.drawText(ctx, rotX + 10, rotY, "B", "black")
                             Draw.circleMidPoint(ctx, rotX5, rotY5, radius * 5)
+                            Draw.drawText(ctx, Draw.convertCoordinateX(26), Draw.convertCoordinateY(-10), `B: (${Math.round(Draw.convertCoordinateToBackX(rotX))}, ${Math.round(Draw.convertCoordinateToBackY(rotY))})`, "black")
+                            Draw.drawText(ctx, Draw.convertCoordinateX(23), Draw.convertCoordinateY(-15), `Tâm O: (${Math.round(Draw.convertCoordinateToBackX(rotX5))}, ${Math.round(Draw.convertCoordinateToBackY(rotY5))})`, "black")
                             resolve();
                             if (angle === 30) {
                                 res();
@@ -76,11 +104,17 @@ class Main extends Component {
                     p = p.then(_ => new Promise(resolve =>
                         setTimeout(function () {
                             that.clearCanvas();
-                            Draw.dda(ctx, x1, y1, x2, y2)
+                            Draw.drawText(ctx, Draw.convertCoordinateX(20), Draw.convertCoordinateY(-5), "Con lắc đơn quay", "black")
+                            Draw.dda(ctx, x1, y1, x2, y2, "black")
+                            Draw.dda(ctx, x6, y6, x7, y7, "black")
+                            Draw.drawText(ctx, Draw.convertCoordinateX(37), Draw.convertCoordinateY(64), "A", "black")
                             let [rotX, rotY] = Draw.rotationPoint(x4, y4, x3, y3, angle)
                             let [rotX5, rotY5] = Draw.rotationPoint(x5, y5, x3, y3, angle)
-                            Draw.dda(ctx, x3, y3, rotX, rotY)
+                            Draw.dda(ctx, x3, y3, rotX, rotY, "blue")
+                            Draw.drawText(ctx, rotX + 10, rotY, "B", "black")
                             Draw.circleMidPoint(ctx, rotX5, rotY5, radius * 5)
+                            Draw.drawText(ctx, Draw.convertCoordinateX(26), Draw.convertCoordinateY(-10), `B: (${Math.round(Draw.convertCoordinateToBackX(rotX))}, ${Math.round(Draw.convertCoordinateToBackY(rotY))})`, "black")
+                            Draw.drawText(ctx, Draw.convertCoordinateX(23), Draw.convertCoordinateY(-15), `Tâm O: (${Math.round(Draw.convertCoordinateToBackX(rotX5))}, ${Math.round(Draw.convertCoordinateToBackY(rotY5))})`, "black")
                             resolve();
                             if (angle === -30) {
                                 res();
@@ -120,7 +154,7 @@ class Main extends Component {
         Draw.dda(ctx, x6, y6, x3, y3)
         Draw.dda(ctx, x3 + 5, y6, x3 + 5, y3)
         Draw.dda(ctx, x3 - 5, y6, x3 - 5, y3)
-        Draw.circleMidPoint(ctx,x6,y6,radius)
+        Draw.circleMidPoint(ctx, x6, y6, radius)
         this.timeout = setInterval(async () => {
             let a = await new Promise((res) => {
                 for (let angle = -180, p = Promise.resolve(); angle <= 180; angle = angle + 5) {
@@ -149,7 +183,7 @@ class Main extends Component {
                     ));
                 }
             });
-        },4000);
+        }, 4000);
     }
 
     draw3D = () => {
@@ -197,11 +231,11 @@ class Main extends Component {
         Draw.dda(ctx, x2, y2, x6, y6);
         Draw.ddaDashed(ctx, x3, y3, x7, y7);
         Draw.dda(ctx, x4, y4, x8, y8);
-
+        Draw.drawText(ctx, x1, y1 + 20, 'A');
     }
 
     render() {
-        const { x, y, z, cr, cc, cd } = this.state;
+        const { x, y, z, cr, cc, cd, pendulum } = this.state;
         return (
             <div className="container row col-12">
                 <div className="col-3 ">
@@ -259,6 +293,21 @@ class Main extends Component {
                 </div>
                 <div className="col-2">
                     <p className="font-weight-bold">Thông tin chi tiết</p>
+                    <div className="col-md-12">
+                        <p className="font-weight-bold">Con lắc đơn</p>
+                        <div className="form-group">
+                            <label className="font-weight-bold" for="exampleInputEmail1">A: ({pendulum.A.x}, {pendulum.A.y})</label>
+                        </div>
+                        <div className="form-group">
+                            <label className="font-weight-bold" for="exampleInputEmail1">B: ({pendulum.B.x}, {pendulum.B.y})</label>
+                        </div>
+                        <div className="form-group">
+                            <label className="font-weight-bold" for="exampleInputEmail1">O: ({pendulum.O.x}, {pendulum.O.y})</label>
+                        </div>
+                        <div className="form-group">
+                            <label className="font-weight-bold" for="exampleInputEmail1">Radius: {pendulum.radius}</label>
+                        </div>
+                    </div>
                 </div>
             </div>
         );

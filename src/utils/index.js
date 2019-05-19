@@ -72,6 +72,15 @@ export const convertCoordinateY = (y) => {
     return 350 - y * 5;
 }
 
+export const convertCoordinateToBackX = (x) => {
+    return (x - 350) / 5;
+}
+
+// Convert y coordinate real to coordinate user
+export const convertCoordinateToBackY = (y) => {
+    return (350 - y) / 5;
+}
+
 export const circleMidPoint = (ctx, x0, y0, radius, color) => {
     let x = radius;
     let y = 0;
@@ -107,3 +116,8 @@ export const rotationPoint = (x, y, cx, cy, angle) => {
     return [nx, ny];
 }
 
+export const drawText = (ctx, x, y, text, color) => {
+    ctx.font = "20px Arial";
+    ctx.fillStyle = color || "black";
+    ctx.fillText(text, x, y);
+}
