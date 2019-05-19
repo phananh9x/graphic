@@ -36,19 +36,22 @@ class Main extends Component {
         const ctx = this.myRef.current.getContext("2d");
         let x1 = Draw.convertCoordinateX(20);
         let y1 = Draw.convertCoordinateY(70);
+        let x6 = Draw.convertCoordinateX(20);
+        let y6 = Draw.convertCoordinateY(69);
         let x2 = Draw.convertCoordinateX(50);
         let y2 = Draw.convertCoordinateY(70);
+        let x7 = Draw.convertCoordinateX(50);
+        let y7 = Draw.convertCoordinateY(69);
         let x3 = Draw.convertCoordinateX(35);
-        let y3 = Draw.convertCoordinateY(70);
+        let y3 = Draw.convertCoordinateY(68);
         let x4 = Draw.convertCoordinateX(35);
         let y4 = Draw.convertCoordinateY(35);
         let radius = 5
         let x5 = Draw.convertCoordinateX(35);
         let y5 = Draw.convertCoordinateY(35 - radius);
-        Draw.dda(ctx, x1, y1, x2, y2)
-        Draw.dda(ctx, x3, y3, x4, y4)
-        Draw.putPixel(ctx, x4, y4)
-        Draw.putPixel(ctx, x4, y4 - 35)
+        Draw.dda(ctx, x1, y1, x2, y2, "black")
+        Draw.dda(ctx, x6, y6, x7, y7, "black")
+        Draw.dda(ctx, x3, y3, x4, y4, "blue")
         Draw.circleMidPoint(ctx, x5, y5, radius * 5)
         this.timeout = setInterval(async () => {
             let a = await new Promise((res) => {
@@ -57,10 +60,11 @@ class Main extends Component {
                     p = p.then(_ => new Promise(resolve =>
                         setTimeout(function () {
                             that.clearCanvas();
-                            Draw.dda(ctx, x1, y1, x2, y2)
+                            Draw.dda(ctx, x1, y1, x2, y2, "black")
+                            Draw.dda(ctx, x6, y6, x7, y7, "black")
                             let [rotX, rotY] = Draw.rotationPoint(x4, y4, x3, y3, angle)
                             let [rotX5, rotY5] = Draw.rotationPoint(x5, y5, x3, y3, angle)
-                            Draw.dda(ctx, x3, y3, rotX, rotY)
+                            Draw.dda(ctx, x3, y3, rotX, rotY, "blue")
                             Draw.circleMidPoint(ctx, rotX5, rotY5, radius * 5)
                             resolve();
                             if (angle === 30) {
@@ -76,10 +80,11 @@ class Main extends Component {
                     p = p.then(_ => new Promise(resolve =>
                         setTimeout(function () {
                             that.clearCanvas();
-                            Draw.dda(ctx, x1, y1, x2, y2)
+                            Draw.dda(ctx, x1, y1, x2, y2, "black")
+                            Draw.dda(ctx, x6, y6, x7, y7, "black")
                             let [rotX, rotY] = Draw.rotationPoint(x4, y4, x3, y3, angle)
                             let [rotX5, rotY5] = Draw.rotationPoint(x5, y5, x3, y3, angle)
-                            Draw.dda(ctx, x3, y3, rotX, rotY)
+                            Draw.dda(ctx, x3, y3, rotX, rotY, "blue")
                             Draw.circleMidPoint(ctx, rotX5, rotY5, radius * 5)
                             resolve();
                             if (angle === -30) {
@@ -120,7 +125,7 @@ class Main extends Component {
         Draw.dda(ctx, x6, y6, x3, y3)
         Draw.dda(ctx, x3 + 5, y6, x3 + 5, y3)
         Draw.dda(ctx, x3 - 5, y6, x3 - 5, y3)
-        Draw.circleMidPoint(ctx,x6,y6,radius)
+        Draw.circleMidPoint(ctx, x6, y6, radius)
         this.timeout = setInterval(async () => {
             let a = await new Promise((res) => {
                 for (let angle = -180, p = Promise.resolve(); angle <= 180; angle = angle + 5) {
@@ -131,7 +136,7 @@ class Main extends Component {
                             Draw.dda(ctx, x3, y6, x3, y3)
                             Draw.dda(ctx, x3 + 5, y6, x3 + 5, y3)
                             Draw.dda(ctx, x3 - 5, y6, x3 - 5, y3)
-                            Draw.circleMidPoint(ctx,x6,y6,radius)
+                            Draw.circleMidPoint(ctx, x6, y6, radius)
                             let [rotX1, rotY1] = Draw.rotationPoint(x1, y1, x6, y6, angle)
                             let [rotX2, rotY2] = Draw.rotationPoint(x2, y2, x6, y6, angle)
                             let [rotX4, rotY4] = Draw.rotationPoint(x4, y4, x6, y6, angle)
@@ -148,7 +153,7 @@ class Main extends Component {
                     ));
                 }
             });
-        },4000);
+        }, 4000);
     }
 
     draw3D = () => {
