@@ -201,7 +201,7 @@ class Main extends Component {
         Draw.dda(ctx, x2, y2, x6, y6);
         Draw.ddaDashed(ctx, x3, y3, x7, y7);
         Draw.dda(ctx, x4, y4, x8, y8);
-
+        Draw.drawText(ctx, x1, y1 + 20, 'A');
     }
 
     render() {
