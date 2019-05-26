@@ -33,7 +33,8 @@ class Main extends Component {
             B: { x: 0, y: 0 },
             C: { x: 0, y: 0 },
             D: { x: 0, y: 0 }
-        }
+        },
+        active: 0
     }
 
     componentDidMount() {
@@ -41,10 +42,22 @@ class Main extends Component {
         Draw.initCoordinates2D(ctx);
     }
 
+    clearDraw = async () => {
+        if (this.timeout) {
+            clearInterval(this.timeout)
+        }
+        await new Promise(r => setTimeout(() => { this.clearCanvas(); r() }, 1000));
+    }
+
     clearCanvas = () => {
+        const { active } = this.state;
         const ctx = this.myRef.current.getContext("2d");
         ctx.clearRect(0, 0, 700, 700);
-        Draw.initCoordinates2D(ctx);
+        if (active === 2) {
+            Draw.initCoordinates3D(ctx);
+        } else {
+            Draw.initCoordinates2D(ctx);
+        }
     }
 
     onChangeValue = (event) => {
@@ -56,8 +69,11 @@ class Main extends Component {
         })
     }
 
-    drawPendulum = () => {
-        this.clearCanvas();
+    drawPendulum = async () => {
+        this.setState({
+            active: 0
+        });
+        await this.clearDraw();
         const ctx = this.myRef.current.getContext("2d");
         let x1 = Draw.convertCoordinateX(20);
         let y1 = Draw.convertCoordinateY(70);
@@ -146,11 +162,12 @@ class Main extends Component {
 
 
     }
-    drawPinwheel = () => {
-        if (this.timeout) {
-            clearInterval(this.timeout)
-        }
-        this.clearCanvas();
+
+    drawPinwheel = async () => {
+        this.setState({
+            active: 1
+        });
+        await this.clearDraw();
         const ctx = this.myRef.current.getContext("2d");
         let x1 = Draw.convertCoordinateX(20);
         let y1 = Draw.convertCoordinateY(50);
@@ -231,13 +248,12 @@ class Main extends Component {
         }, 3800);
     }
 
-    draw3D = () => {
-        if (this.timeout) {
-            clearInterval(this.timeout)
-        }
-        this.clearCanvas();
+    draw3D = async () => {
+        this.setState({
+            active: 2
+        });
+        await this.clearDraw();
         const { rect: { x, y, z, cr, cc, cd } } = this.state;
-        console.log(this.state)
         const ctx = this.myRef.current.getContext("2d");
         let a = Math.sqrt(2.0) / 2;
         let x1, x2, x3, x4, x5, x6, x7, x8, y1, y2, y3, y4, y5, y6, y7, y8;
@@ -301,68 +317,81 @@ class Main extends Component {
     }
 
     render() {
-        const { rect: { x, y, z, cr, cc, cd, A, B, C, D, E, F, G, H }, pendulum, pinwheel } = this.state;
+        const { rect: { x, y, z, cr, cc, cd, A, B, C, D, E, F, G, H }, pendulum, pinwheel, active } = this.state;
         return (
             <div className="container row col-12">
-                <div className="col-3 ">
+                <div className="col-3">
                     <p className="font-weight-bold">Hành động</p>
-                    <div className="col-12">
-                        <div className="btn btn-secondary">Vẽ 2D</div>
-                        <div className="btn btn-secondary" onClick={() => this.drawPendulum()}>Vẽ con lắc đơn</div>
-                        <div className="btn btn-secondary" onClick={() => this.drawPinwheel()}>Vẽ chong chóng</div>
+                    <div className="col-12 row">
+                        <div className="col-3">
+                            <p className="font-weight-bold">Vẽ 2D</p>
+                        </div>
+                        <div className="col-9">
+                            <div className="col-12">
+                                <div className="btn btn-secondary" onClick={() => this.drawPendulum()}>Con lắc đơn</div>
+                            </div>
+                            <div className="col-12">
+                                <div className="btn btn-secondary" onClick={() => this.drawPinwheel()}>Chong chóng</div>
+                            </div>
+                        </div>
                     </div>
-                    <div className="col-12" style={{ marginTop: 10 }}>
-                        <div className="btn btn-secondary">Vẽ 3D</div>
+                    <div className="col-12 d-flex justify-content-start" style={{ marginTop: 10 }}>
+                        <p className="font-weight-bold">Vẽ 3D (Hình hộp chữ nhật)</p>
                     </div>
-                    <div className="col-12" style={{ marginTop: 10 }}>
-                        <div className="btn btn-warning" onClick={() => this.clearCanvas()}>Clear</div>
-                    </div>
-                    <div className="col-12 row rect" style={{ marginTop: 10 }}>
+                    <div className="row rect" style={{ marginTop: 10 }}>
                         <p className="font-weight-bold">Nhập tọa độ hình hộp chữ nhật.</p>
                         <form class="form-inline">
                             <div className="form-group">
-                                <label className="font-weight-bold" for="exampleInputEmail1">x: </label>
+                                <p className="font-weight-bold" for="exampleInputEmail1">x: </p>
                                 <input type='number' name="x" className="form-control" onChange={(event) => this.onChangeValue(event)} placeholder="Enter x" value={x} style={{ marginLeft: 10 }} />
                             </div>
                             <div className="form-group">
-                                <label className="font-weight-bold" for="exampleInputEmail1">y: </label>
+                                <p className="font-weight-bold" for="exampleInputEmail1">y: </p>
                                 <input type='number' name="y" className="form-control" onChange={(event) => this.onChangeValue(event)} placeholder="Enter y" value={y} style={{ marginLeft: 10 }} />
                             </div>
                             <div className="form-group">
-                                <label className="font-weight-bold" for="exampleInputEmail1">z: </label>
+                                <p className="font-weight-bold" for="exampleInputEmail1">z: </p>
                                 <input type='number' name="z" className="form-control" onChange={(event) => this.onChangeValue(event)} placeholder="Enter z" value={z} style={{ marginLeft: 10 }} />
                             </div>
-
                             <div className="form-group">
-                                <label className="font-weight-bold" for="exampleInputEmail1">chiều rộng: </label>
+                                <p className="font-weight-bold" for="exampleInputEmail1">chiều rộng: </p>
                                 <input type='number' name="cr" className="form-control" onChange={(event) => this.onChangeValue(event)} placeholder="Enter chiều rộng" value={cr} style={{ marginLeft: 10 }} />
                             </div>
                             <div className="form-group">
-                                <label className="font-weight-bold" for="exampleInputEmail1">chiều cao: </label>
+                                <p className="font-weight-bold" for="exampleInputEmail1">chiều cao: </p>
                                 <input type='number' name="cc" className="form-control" onChange={(event) => this.onChangeValue(event)} placeholder="Enter chiều cao" value={cc} style={{ marginLeft: 10 }} />
                             </div>
                             <div className="form-group">
-                                <label className="font-weight-bold" for="exampleInputEmail1">chiều dài: </label>
+                                <p className="font-weight-bold" for="exampleInputEmail1">chiều dài: </p>
                                 <input type='number' name="cd" className="form-control" onChange={(event) => this.onChangeValue(event)} placeholder="Enter chiều dài" value={cd} style={{ marginLeft: 10 }} />
                             </div>
-                            <div className="col-12">
+                            <div className="col-12 d-flex justify-content-around">
                                 <div className="btn btn-success" onClick={() => this.draw3D()}>Vẽ</div>
+                                <div className="btn btn-warning" onClick={() => this.clearDraw()}>Clear</div>
                             </div>
                         </form>
                     </div>
                 </div>
                 <div className="col-7">
                     <p className="font-weight-bold">Màn hình vẽ</p>
-                    <p>y</p>
+                    <p>{active !== 2 ? 'y' : 'z'}</p>
                     <canvas ref={this.myRef} id="myCanvas" width="700" height="700"
                         style={{ border: '1px solid #c3c3c3' }}>
                         Your browser does not support the canvas element.</canvas>
-                    <p style={{ position: 'absolute', top: 350, right: 0 }}>x</p>
-
+                    <p style={{
+                        position: 'absolute',
+                        top: '415px',
+                        right: '75px'
+                    }}>x</p>
+                    <p style={{
+                        position: 'absolute',
+                        top: '755px',
+                        left: '75px'
+                    }}>{active === 2 ? 'y' : ''}</p>
                 </div>
                 <div className="col-2">
                     <p className="font-weight-bold">Thông tin chi tiết</p>
-                    <div className="col-md-12">
+                    <div className="col-md-12" style={{ display: active !== 0 && 'none' }}>
                         <p className="font-weight-bold">Con lắc đơn</p>
                         <div className="form-group">
                             <label className="font-weight-bold" for="exampleInputEmail1">A: ({pendulum.A.x}, {pendulum.A.y})</label>
@@ -377,7 +406,7 @@ class Main extends Component {
                             <label className="font-weight-bold" for="exampleInputEmail1">Radius: {pendulum.radius}</label>
                         </div>
                     </div>
-                    <div className="col-md-12">
+                    <div className="col-md-12" style={{ display: active !== 2 && 'none' }}>
                         <p className="font-weight-bold">Hình hộp chữ nhật</p>
                         <div className="form-group">
                             <label className="font-weight-bold" for="exampleInputEmail1">A: ({A.x}, {A.y})</label>
@@ -404,7 +433,7 @@ class Main extends Component {
                             <label className="font-weight-bold" for="exampleInputEmail1">H: ({H.x}, {H.y})</label>
                         </div>
                     </div>
-                    <div className="col-md-12">
+                    <div className="col-md-12" style={{ display: active !== 1 && 'none' }}>
                         <p className="font-weight-bold">Chong chóng</p>
                         <div className="form-group">
                             <label className="font-weight-bold" for="exampleInputEmail1">A: ({pinwheel.A.x}, {pinwheel.A.y})</label>

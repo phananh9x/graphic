@@ -7,3 +7,11 @@
 .col-12 {
     margin-top: 10px;
 }
+
+.rect {
+    padding: 0 20px;
+}
+
+.container .btn {
+    width: 150px;
+}

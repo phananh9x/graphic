@@ -16,6 +16,17 @@ export const initCoordinates2D = (ctx) => {
 
 }
 
+export const initCoordinates3D = (ctx) => {
+    for (let index = 0; index < 140; index++) {
+        drawLine(ctx, '#c3c3c3', index * 5, 0, index * 5, 700);
+        drawLine(ctx, '#c3c3c3', 0, index * 5, 700, index * 5);
+    }
+    drawLine(ctx, '#FF0000', 350, 0, 350, 350);
+    drawLine(ctx, '#FF0000', 350, 350, 700, 350);
+    drawLine(ctx, '#FF0000', 0, 700, 350, 350);
+
+}
+
 export const putPixel = (ctx, x, y, color) => {
     ctx.fillStyle = color || "#FF0000";
     ctx.fillRect(x, y, 5, 5);
