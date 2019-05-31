@@ -93,11 +93,11 @@ export const convertCoordinateToBackY = (y) => {
 }
 
 export const circleMidPoint = (ctx, x0, y0, radius, color) => {
-    let x = radius;
-    let y = 0;
-    let p = 5/4 - x;
+    let y = radius;
+    let x = 0;
+    let p = 5/4 - radius;
 
-    while (x >= y) {
+    while (x <= y) {
         putPixel(ctx, x + x0, y + y0, color);
         putPixel(ctx, y + x0, x + y0, color);
         putPixel(ctx, -x + x0, y + y0, color);
@@ -106,14 +106,14 @@ export const circleMidPoint = (ctx, x0, y0, radius, color) => {
         putPixel(ctx, -y + x0, -x + y0, color);
         putPixel(ctx, x + x0, -y + y0, color);
         putPixel(ctx, y + x0, -x + y0, color);
-        y++;
+        x++;
 
         if (p < 0) {
-            p += 2 * y + 1;
+            p += 2 * x + 1;
         }
         else {
-            x--;
-            p += 2 * (y - x + 1);
+            y--;
+            p += 2 * (x - y) + 1;
         }
     }
 }
