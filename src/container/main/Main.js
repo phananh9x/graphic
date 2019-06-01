@@ -95,7 +95,10 @@ class Main extends Component {
         Draw.drawText(ctx, Draw.convertCoordinateX(37), Draw.convertCoordinateY(64), "A", "black")
         Draw.dda(ctx, x3, y3, x4, y4, "blue")
         Draw.drawText(ctx, Draw.convertCoordinateX(37), Draw.convertCoordinateY(35), "B", "black")
-        Draw.circleMidPoint(ctx, x5, y5, radius * 5)
+        for (let index = 1; index <= radius; index++) {
+            Draw.circleMidPoint(ctx, x5, y5, index * 5);
+            Draw.putPixel(ctx, x5, y5);
+        }
         Draw.drawText(ctx, Draw.convertCoordinateX(20), Draw.convertCoordinateY(-5), "Con lắc đơn quay", "black")
         this.setState({
             pendulum: {
@@ -122,7 +125,10 @@ class Main extends Component {
                             let [rotX5, rotY5] = Draw.rotationPoint(x5, y5, x3, y3, angle)
                             Draw.dda(ctx, x3, y3, rotX, rotY, "blue")
                             Draw.drawText(ctx, rotX + 10, rotY, "B", "black")
-                            Draw.circleMidPoint(ctx, rotX5, rotY5, radius * 5)
+                            for (let index = 1; index <= radius; index++) {
+                                Draw.circleMidPoint(ctx, rotX5, rotY5, index * 5);
+                                Draw.putPixel(ctx, rotX5, rotY5);
+                            }
                             Draw.drawText(ctx, Draw.convertCoordinateX(26), Draw.convertCoordinateY(-10), `B: (${Math.round(Draw.convertCoordinateToBackX(rotX))}, ${Math.round(Draw.convertCoordinateToBackY(rotY))})`, "black")
                             Draw.drawText(ctx, Draw.convertCoordinateX(23), Draw.convertCoordinateY(-15), `Tâm O: (${Math.round(Draw.convertCoordinateToBackX(rotX5))}, ${Math.round(Draw.convertCoordinateToBackY(rotY5))})`, "black")
                             resolve();
@@ -147,7 +153,10 @@ class Main extends Component {
                             let [rotX5, rotY5] = Draw.rotationPoint(x5, y5, x3, y3, angle)
                             Draw.dda(ctx, x3, y3, rotX, rotY, "blue")
                             Draw.drawText(ctx, rotX + 10, rotY, "B", "black")
-                            Draw.circleMidPoint(ctx, rotX5, rotY5, radius * 5)
+                            for (let index = 1; index <= radius; index++) {
+                                Draw.circleMidPoint(ctx, rotX5, rotY5, index * 5);
+                                Draw.putPixel(ctx, rotX5, rotY5);
+                            }
                             Draw.drawText(ctx, Draw.convertCoordinateX(26), Draw.convertCoordinateY(-10), `B: (${Math.round(Draw.convertCoordinateToBackX(rotX))}, ${Math.round(Draw.convertCoordinateToBackY(rotY))})`, "black")
                             Draw.drawText(ctx, Draw.convertCoordinateX(23), Draw.convertCoordinateY(-15), `Tâm O: (${Math.round(Draw.convertCoordinateToBackX(rotX5))}, ${Math.round(Draw.convertCoordinateToBackY(rotY5))})`, "black")
                             resolve();
@@ -182,7 +191,7 @@ class Main extends Component {
         let x6 = Draw.convertCoordinateX(35);
         let y6 = Draw.convertCoordinateY(40);
 
-        let radius = 5
+        let radius = 1
         // let x5 = Draw.convertCoordinateX(35);
         // let y5 = Draw.convertCoordinateY(35 - radius);
         Draw.dda(ctx, x1, y1, x5, y5, "blue")
@@ -190,7 +199,10 @@ class Main extends Component {
         Draw.dda(ctx, x6, y6, x3, y3, "blue")
         Draw.dda(ctx, x3 + 5, y6, x3 + 5, y3, "blue")
         Draw.dda(ctx, x3 - 5, y6, x3 - 5, y3, "blue")
-        Draw.circleMidPoint(ctx, x6, y6, radius)
+        for (let index = 1; index <= radius; index++) {
+            Draw.circleMidPoint(ctx, x6, y6, index * 5);
+            Draw.putPixel(ctx, x6, y6);
+        }
         Draw.drawText(ctx, Draw.convertCoordinateX(17), Draw.convertCoordinateY(49), "A", "black")
         Draw.drawText(ctx, Draw.convertCoordinateX(52), Draw.convertCoordinateY(49), "B", "black")
         Draw.drawText(ctx, Draw.convertCoordinateX(52), Draw.convertCoordinateY(29), "C", "black")
@@ -208,6 +220,8 @@ class Main extends Component {
         Draw.drawText(ctx, Draw.convertCoordinateX(26), Draw.convertCoordinateY(-15), "B: (50, 50)", "black")
         Draw.drawText(ctx, Draw.convertCoordinateX(26), Draw.convertCoordinateY(-20), "C: (50, 30)", "black")
         Draw.drawText(ctx, Draw.convertCoordinateX(26), Draw.convertCoordinateY(-25), "D: (20, 30)", "black")
+        Draw.drawText(ctx, Draw.convertCoordinateX(18), Draw.convertCoordinateY(-30), `Tâm O: (${Math.round(Draw.convertCoordinateToBackX(x6))}, ${Math.round(Draw.convertCoordinateToBackY(y6))})`, "black")
+
         this.timeout = setInterval(async () => {
             let a = await new Promise((res) => {
                 for (let angle = 0, p = Promise.resolve(); angle <= 360; angle = angle + 5) {
@@ -218,7 +232,7 @@ class Main extends Component {
                             Draw.dda(ctx, x3, y6, x3, y3, "blue")
                             Draw.dda(ctx, x3 + 5, y6, x3 + 5, y3, "blue")
                             Draw.dda(ctx, x3 - 5, y6, x3 - 5, y3, "blue")
-                            Draw.circleMidPoint(ctx, x6, y6, radius)
+                            // Draw.circleMidPoint(ctx, x6, y6, radius)
                             let [rotX1, rotY1] = Draw.rotationPoint(x1, y1, x6, y6, angle)
                             let [rotX2, rotY2] = Draw.rotationPoint(x2, y2, x6, y6, angle)
                             let [rotX4, rotY4] = Draw.rotationPoint(x4, y4, x6, y6, angle)
@@ -236,7 +250,11 @@ class Main extends Component {
                             Draw.drawText(ctx, Draw.convertCoordinateX(26), Draw.convertCoordinateY(-15), `B: (${Math.round(Draw.convertCoordinateToBackX(rotX2))}, ${Math.round(Draw.convertCoordinateToBackY(rotY2))})`, "black")
                             Draw.drawText(ctx, Draw.convertCoordinateX(26), Draw.convertCoordinateY(-20), `C: (${Math.round(Draw.convertCoordinateToBackX(rotX5))}, ${Math.round(Draw.convertCoordinateToBackY(rotY5))})`, "black")
                             Draw.drawText(ctx, Draw.convertCoordinateX(26), Draw.convertCoordinateY(-25), `D: (${Math.round(Draw.convertCoordinateToBackX(rotX4))}, ${Math.round(Draw.convertCoordinateToBackY(rotY4))})`, "black")
-                            Draw.circleMidPoint(ctx, x6, y6, radius)
+                            Draw.drawText(ctx, Draw.convertCoordinateX(18), Draw.convertCoordinateY(-30), `Tâm O: (${Math.round(Draw.convertCoordinateToBackX(x6))}, ${Math.round(Draw.convertCoordinateToBackY(y6))})`, "black")
+                            for (let index = 1; index <= radius; index++) {
+                                Draw.circleMidPoint(ctx, x6, y6, index * 5);
+                                Draw.putPixel(ctx, x6, y6);
+                            }
                             resolve();
                             if (angle === 5) {
                                 res();
