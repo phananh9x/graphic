@@ -95,9 +95,9 @@ class Main extends Component {
         Draw.drawText(ctx, Draw.convertCoordinateX(37), Draw.convertCoordinateY(64), "A", "black")
         Draw.dda(ctx, x3, y3, x4, y4, "blue")
         Draw.drawText(ctx, Draw.convertCoordinateX(37), Draw.convertCoordinateY(35), "B", "black")
+        Draw.putPixel(ctx, x5, y5);
         for (let index = 1; index <= radius; index++) {
             Draw.circleMidPoint(ctx, x5, y5, index * 5);
-            Draw.putPixel(ctx, x5, y5);
         }
         Draw.drawText(ctx, Draw.convertCoordinateX(20), Draw.convertCoordinateY(-5), "Con lắc đơn quay", "black")
         this.setState({
