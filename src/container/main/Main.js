@@ -178,18 +178,21 @@ class Main extends Component {
         });
         await this.clearDraw();
         const ctx = this.myRef.current.getContext("2d");
+        let x6 = Draw.convertCoordinateX(35);
+        let y6 = Draw.convertCoordinateY(40);
         let x1 = Draw.convertCoordinateX(20);
         let y1 = Draw.convertCoordinateY(50);
         let x2 = Draw.convertCoordinateX(50);
         let y2 = Draw.convertCoordinateY(50);
         let x3 = Draw.convertCoordinateX(35);
         let y3 = Draw.convertCoordinateY(0);
-        let x4 = Draw.convertCoordinateX(20);
-        let y4 = Draw.convertCoordinateY(30);
-        let x5 = Draw.convertCoordinateX(50);
-        let y5 = Draw.convertCoordinateY(30);
-        let x6 = Draw.convertCoordinateX(35);
-        let y6 = Draw.convertCoordinateY(40);
+        let [x5, y5] = Draw.symmetry(35,40, 20,50);
+        let [x4, y4] = Draw.symmetry(35,40, 50,50);
+        x5 = Draw.convertCoordinateX(x5);
+        y5 = Draw.convertCoordinateY(y5);
+        x4 = Draw.convertCoordinateX(x4);
+        y4 = Draw.convertCoordinateY(y4);
+       
 
         let radius = 1
         // let x5 = Draw.convertCoordinateX(35);

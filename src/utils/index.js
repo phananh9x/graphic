@@ -132,3 +132,8 @@ export const drawText = (ctx, x, y, text, color) => {
     ctx.fillStyle = color || "black";
     ctx.fillText(text, x, y);
 }
+
+export const symmetry = (x0, y0, x, y) => {
+    return [2*x0 - x, 2 * y0 - y];
+}
+
